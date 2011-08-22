@@ -14,6 +14,12 @@ public class BasicDirectoryNode implements DirectoryNode {
   
   private File file;
 
+  public BasicDirectoryNode() {}
+
+  public BasicDirectoryNode(File file) {
+    this.file = file;
+  }
+
   @Override
   public Node[] getChildNodes() {
     File[] listFiles = file.listFiles();
@@ -58,4 +64,5 @@ public class BasicDirectoryNode implements DirectoryNode {
   public String toString() {
     return getNodeName();
   }
+
 }

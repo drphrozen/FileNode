@@ -5,6 +5,8 @@
 package dk.znz.filenode;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.AbstractListModel;
 
 /**
@@ -14,28 +16,38 @@ import javax.swing.AbstractListModel;
 public class DirectoryModel extends AbstractListModel<Node> {
 
   private DirectoryNode root;
-  private Node[] children;
+  private final ArrayList<Node> children = new ArrayList<Node>(1024);
 
   public DirectoryModel(File root) {
-    this.root = (DirectoryNode)NodeFactory.getInstance().createNode(root);
+    setRoot((DirectoryNode)NodeFactory.getInstance().createNode(root));
+    refresh();
+  }
+
+  DirectoryModel(DirectoryNode node) {
+    setRoot(node);
     refresh();
   }
 
   @Override
   public int getSize() {
-    return children.length;
+    return children.size();
   }
 
   @Override
   public Node getElementAt(int index) {
-    return children[index];
+    return children.get(index);
   }
 
   public final void refresh() {
-    children = root.getChildNodes();
+    children.clear();
+    Node parent = root.getParent();
+    if(parent != null && parent instanceof DirectoryNode) {
+      children.add(new ParentNode((DirectoryNode)root.getParent()));
+    }
+    children.addAll(Arrays.asList(root.getChildNodes()));
   }
 
-  public void setRoot(DirectoryNode root) {
+  public final void setRoot(DirectoryNode root) {
     this.root = root;
   }
 }

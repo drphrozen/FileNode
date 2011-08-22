@@ -21,6 +21,9 @@ public class NodeFactory {
   }
   
   public Node createNode(File f) {
+    if(f == null) {
+      return null;
+    }
     if(f.isDirectory()) {
       BasicDirectoryNode basicDirectoryNode = new BasicDirectoryNode();
       basicDirectoryNode.setFile(f);

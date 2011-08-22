@@ -4,6 +4,8 @@
  */
 package dk.znz.filenode;
 
+import java.io.File;
+
 /**
  *
  * @author drphrozen
@@ -12,4 +14,5 @@ public interface Node {
   String getNodeName();
   Node getParent();
   Attribute getAttribute(String name);
+  File getFile();
 }

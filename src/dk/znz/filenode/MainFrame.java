@@ -10,6 +10,7 @@
  */
 package dk.znz.filenode;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 /**
@@ -18,9 +19,12 @@ import java.io.File;
  */
 public class MainFrame extends javax.swing.JFrame {
 
+  private DirectoryModel directoryModel;
+  
   /** Creates new form MainFrame */
   public MainFrame() {
-    initComponents();    
+    initComponents();
+    initCustomCode();
   }
 
   /** This method is called from within the constructor to
@@ -38,7 +42,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-    jList1.setModel(getRootChildren("/"));
+    jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jList1MouseClicked(evt);
+      }
+    });
+    jList1.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(java.awt.event.KeyEvent evt) {
+        jList1KeyPressed(evt);
+      }
+    });
     jScrollPane1.setViewportView(jList1);
 
     getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -46,6 +59,18 @@ public class MainFrame extends javax.swing.JFrame {
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
+
+private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+  if(evt.getClickCount() == 2) {
+    activateElement(jList1.locationToIndex(evt.getPoint()));
+  }
+}//GEN-LAST:event_jList1MouseClicked
+
+private void jList1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyPressed
+  if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+    activateElement(jList1.getSelectedIndex());
+  }
+}//GEN-LAST:event_jList1KeyPressed
 
   /**
    * @param args the command line arguments
@@ -88,7 +113,21 @@ public class MainFrame extends javax.swing.JFrame {
   private javax.swing.JScrollPane jScrollPane1;
   // End of variables declaration//GEN-END:variables
 
-  private DirectoryModel getRootChildren(String root) {
-    return new DirectoryModel(new File(root));
+  private void changeDirectory(DirectoryNode node) {
+    directoryModel = new DirectoryModel(node);
+    jList1.setModel(directoryModel);
+  }
+
+  private void activateElement(int locationToIndex) {
+    if(locationToIndex != -1) {
+      Node node = directoryModel.getElementAt(locationToIndex);
+      if(node instanceof DirectoryNode) {
+        changeDirectory((DirectoryNode)node);
+      }
+    }
+  }
+
+  private void initCustomCode() {
+    changeDirectory(new BasicDirectoryNode(new File("/")));
   }
 }
