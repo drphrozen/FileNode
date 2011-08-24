@@ -10,44 +10,46 @@ import java.util.Arrays;
 import javax.swing.AbstractListModel;
 
 /**
- *
+ * 
  * @author drphrozen
  */
 public class DirectoryModel extends AbstractListModel<Node> {
 
-  private DirectoryNode root;
-  private final ArrayList<Node> children = new ArrayList<Node>(1024);
+	private static final long serialVersionUID = -1165064948484401843L;
 
-  public DirectoryModel(File root) {
-    setRoot((DirectoryNode)NodeFactory.getInstance().createNode(root));
-    refresh();
-  }
+	private DirectoryNode root;
+	private final ArrayList<Node> children = new ArrayList<Node>(1024);
 
-  DirectoryModel(DirectoryNode node) {
-    setRoot(node);
-    refresh();
-  }
+	public DirectoryModel(File root) {
+		setRoot((DirectoryNode) NodeFactory.getInstance().createNode(root));
+		refresh();
+	}
 
-  @Override
-  public int getSize() {
-    return children.size();
-  }
+	DirectoryModel(DirectoryNode node) {
+		setRoot(node);
+		refresh();
+	}
 
-  @Override
-  public Node getElementAt(int index) {
-    return children.get(index);
-  }
+	@Override
+	public int getSize() {
+		return children.size();
+	}
 
-  public final void refresh() {
-    children.clear();
-    Node parent = root.getParent();
-    if(parent != null && parent instanceof DirectoryNode) {
-      children.add(new ParentNode((DirectoryNode)root.getParent()));
-    }
-    children.addAll(Arrays.asList(root.getChildNodes()));
-  }
+	@Override
+	public Node getElementAt(int index) {
+		return children.get(index);
+	}
 
-  public final void setRoot(DirectoryNode root) {
-    this.root = root;
-  }
+	public final void refresh() {
+		children.clear();
+		Node parent = root.getParent();
+		if (parent != null && parent instanceof DirectoryNode) {
+			children.add(new ParentNode((DirectoryNode) root.getParent()));
+		}
+		children.addAll(Arrays.asList(root.getChildNodes()));
+	}
+
+	public final void setRoot(DirectoryNode root) {
+		this.root = root;
+	}
 }
