@@ -13,6 +13,7 @@
 
 ## Columns
 Only valid for column based views
+
 Dynamic columns
 
 1. Name
