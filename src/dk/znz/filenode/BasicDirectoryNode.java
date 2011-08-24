@@ -62,7 +62,7 @@ public class BasicDirectoryNode implements DirectoryNode {
 
   @Override
   public String toString() {
-    return getNodeName();
+    return "[" + getNodeName() + "]";
   }
 
 }
